@@ -1,6 +1,6 @@
 import requests
 
-def send_log(webhook_url, message):
+def Send_Log(webhook_url, message):
     data = {
         "embeds": [
             {

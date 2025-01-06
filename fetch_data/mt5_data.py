@@ -16,8 +16,7 @@ def Data_Candles(symbol, timeframe, n_candles):
         print(f"Failed to retrieve data for {symbol}: {mt5.last_error()}")
         return None
 
-    # Create DataFrame and format the 'time' column
-    df = pd.DataFrame(bars, columns=['time', 'open', 'high', 'low', 'close', 'tick_volume', 'spread', 'real_volume'])
+    # Convert to DataFrame and format time column
+    df = pd.DataFrame(bars)
     df['time'] = pd.to_datetime(df['time'], unit='s')
-    
-    return df[['time', 'open', 'high', 'low', 'close']]
+    return df

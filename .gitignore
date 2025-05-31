@@ -1,2 +1,44 @@
-.env
+# Byte-compiled / optimized / DLL files
 __pycache__/
+*.py[cod]
+*$py.class
+
+# Environment and IDE
+.env
+.venv/
+env/
+venv/
+.idea/
+.vscode/
+*.code-workspace
+
+# Logs
+*.log
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# PyInstaller
+*.spec
+dist/
+build/
+
+# MetaTrader5 logs or temporary
+*.ex5
+*.log
+*.set
+*.hst
+*.mq5
+*.mql5
+
+# System
+.DS_Store
+Thumbs.db
+
+# Data files
+*.csv
+*.xlsx
+*.json
+
+# Cache
+*.cache

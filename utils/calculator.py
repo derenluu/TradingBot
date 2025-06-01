@@ -32,7 +32,7 @@ def get_pip_value(symbol):
 
     tick_size = symbol_info.trade_tick_size
     pip_size = tick_size * 10
-    logger.info(f"{symbol} - Tick size: {tick_size}, Pip size: {pip_size}")
+    logger.info(f" {symbol} - Tick size: {tick_size}, Pip size: {pip_size}")
     return pip_size
 
 # Tính giá Stop Loss dựa trên ATR và Bollinger Band
@@ -65,7 +65,7 @@ def calculate_stop_loss(entry_price, order_type, atr, band):
 def calculate_take_profit(entry_price, order_type, atr, rr_ratio = 2):
     if None in (entry_price, order_type, atr):
         return None
-
+    
     if order_type.lower() == 'buy':
         return entry_price + (atr * rr_ratio)
     elif order_type.lower() == 'sell':

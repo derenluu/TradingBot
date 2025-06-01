@@ -1,6 +1,7 @@
 import MetaTrader5 as mt5
 import pandas as pd
 import logging
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +36,11 @@ class DataLoader:
     # Parameters:
     # ⇒ start, end: datetime.datetime
     def get_candles_from_to(self, symbol, timeframe, start, end):
+        if isinstance(start, str):
+            start = datetime.strptime(start, "%Y-%m-%d")
+        if isinstance(end, str):
+            end = datetime.strptime(end, "%Y-%m-%d")
+
         bars = mt5.copy_rates_range(symbol, timeframe, start, end)
         if bars is None:
             logger.error(f"Lỗi lấy dữ liệu nến theo thời gian cho {symbol}: {mt5.last_error()}")

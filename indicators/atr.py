@@ -3,7 +3,7 @@
 # ⇒ df (pd.DataFrame): Dữ liệu nến OHLCV, phải có 'high', 'low', 'close'
 # ⇒ period (int): Số chu kỳ để tính ATR (default = 14)
 # Returns:
-# ⇒pd.Series: Cột ATR vừa được thêm vào df (df['ATR'])
+# ⇒ pd.Series: Cột ATR vừa được thêm vào df (df['ATR'])
 def calculate_atr(df, period = 14):
     high_low = df['high'] - df['low']
     high_close = (df['high'] - df['close'].shift(1)).abs()

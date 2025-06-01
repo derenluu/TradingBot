@@ -21,7 +21,7 @@ def calculate_bollinger_bands(df, column = 'close', window = 20, num_std = 2):
 # ⇒ order_type (str): 'buy' hoặc 'sell'
 # Returns:
 # ⇒ float: Giá stop loss từ boll_upper hoặc boll_lower tuỳ theo loại lệnh
-def get_stop_loss_from_bollinger(df, order_type='buy'):
+def get_stop_loss_from_bollinger(df, order_type = 'buy'):
     if df.empty or 'boll_lower' not in df.columns or 'boll_upper' not in df.columns:
         return None
 

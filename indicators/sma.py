@@ -7,5 +7,5 @@
 # ⇒ pd.Series: Cột SMA vừa được thêm vào df (df[f'SMA_{window}'])
 def calculate_sma(df, column = 'close', window = 14):
     sma_column = f'SMA_{window}'
-    df[sma_column] = df[column].rolling(window=window).mean()
+    df[sma_column] = df[column].rolling(window = window).mean()
     return df[sma_column]

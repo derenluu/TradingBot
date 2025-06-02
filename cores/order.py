@@ -92,6 +92,7 @@ class OrderManager:
         return True
     
     # Kiểm tra đã có lệnh chưa
-    def has_open_position(symbol):
+    # Đúng cách: self + truyền symbol
+    def has_open_position(self, symbol):
         positions = mt5.positions_get(symbol = symbol)
         return positions is not None and len(positions) > 0

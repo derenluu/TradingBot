@@ -6,9 +6,9 @@ logger = logging.getLogger(__name__)
 
 from dotenv import load_dotenv
 from datetime import datetime
-from core.account import MT5Account
-from core.order import OrderManager
-from core.data_loader import DataLoader
+from cores.account import MT5Account
+from cores.order import OrderManager
+from cores.data_loader import DataLoader
 from indicators.atr import calculate_atr
 from indicators.bollinger import calculate_bollinger_bands
 from strategies.simpleStrategy import SimpleStrategy
@@ -43,6 +43,7 @@ if not account.login():
     )
     exit()
 
+
 # Đăng nhập account thành công MetaTrader5
 notifier.send_log(
     title="✅ MetaTrader5 connection successfully.",
@@ -52,7 +53,7 @@ notifier.send_log(
 
 while True:
     # Kiểm tra đảm bảo rằng đang không có lệnh nào đang mở
-    if order_manager.has_open_position():
+    if order_manager.has_open_position(SYMBOL):
         print("🔁 Đang có lệnh mở, không thực hiện thêm lệnh mới.")
         time.sleep(1)
         continue

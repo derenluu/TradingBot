@@ -6,7 +6,7 @@
 # ⇒ num_std (int): Hệ số độ lệch chuẩn
 # Returns:
 # ⇒ pd.DataFrame: DataFrame chứa cột 'boll_upper', 'boll_middle', 'boll_lower'
-def calculate_bollinger_bands(df, column = 'close', window = 20, num_std = 2):
+def calculate_bollinger_bands(df, column = 'close', window = 30, num_std = 2):
     rolling_mean = df[column].rolling(window = window).mean()
     rolling_std = df[column].rolling(window = window).std()
 

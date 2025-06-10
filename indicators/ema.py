@@ -1,4 +1,3 @@
-
 # Tính Exponential Moving Average (EMA) và thêm vào DataFrame
 # Parameters:
 # ⇒ df (pd.DataFrame): Dữ liệu OHLCV

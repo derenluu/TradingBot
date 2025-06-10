@@ -15,5 +15,5 @@ def calculate_atr(df, period = 14):
 
     df['TR'] = tr.max(axis = 1)
     df['ATR'] = df['TR'].ewm(span = period, min_periods = period).mean()
-    df.drop(columns=['TR'], inplace = True)
+    df.drop(columns = ['TR'], inplace = True)
     return df['ATR']

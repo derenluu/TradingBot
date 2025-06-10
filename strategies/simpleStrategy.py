@@ -4,6 +4,8 @@ logger = logging.getLogger(__name__)
 
 from indicators.sma import calculate_sma
 from indicators.rsi import calculate_rsi
+from indicators.atr import calculate_atr
+from indicators.bollinger import calculate_bollinger_bands
 
 class SimpleStrategy:
     def __init__(self, df):
@@ -11,35 +13,43 @@ class SimpleStrategy:
         self.entry_price = None
         self.order_type = None
 
+
     def analyze(self):
-        calculate_sma(self.df, window = 8)
-        calculate_sma(self.df, window = 89)
-        # calculate_rsi(self.df, period = 14)
+        calculate_atr(self.df, period = 14)
+        calculate_rsi(self.df, period = 14)
+        calculate_bollinger_bands(self.df, column = 'close', window = 30, num_std = 2)
+
+        # Tính độ rộng Bollinger Band
+        self.df['bb_width'] = (self.df['boll_upper'] - self.df['boll_lower']) / self.df['boll_middle']
+
 
     def get_signal(self):
-        if len(self.df) < 201:
+        # Dùng 34 cây nến, vừa đủ data cho BB 30 + RSI 14
+        if len(self.df) < 35:
             return 'hold'
 
-        fast_sma = self.df['SMA_8']
-        slow_sma = self.df['SMA_89']
-        # rsi = self.df['RSI_14']
-        close = self.df.iloc[-1]['close']
+        last = self.df.iloc[-1]
 
-        # and rsi.iloc[-1] < 30
-        if fast_sma.iloc[-2] < slow_sma.iloc[-2] and fast_sma.iloc[-1] > slow_sma.iloc[-1]:
+        # Điều kiện BUY: giá > BB mid, RSI > 50, BB hẹp
+        if (last['close'] > last['boll_middle'] and last['RSI_14'] > 50 and last['bb_width'] < 0.12):
             self.order_type = 'buy'
-            self.entry_price = close
+            self.entry_price = last['close']
             return 'buy'
 
-        # and rsi.iloc[-1] > 70
-        elif fast_sma.iloc[-2] > slow_sma.iloc[-2] and fast_sma.iloc[-1] < slow_sma.iloc[-1]:
+        # Điều kiện SELL: giá < BB mid, RSI < 50, BB hẹp
+        elif ( last['close'] < last['boll_middle'] and last['RSI_14'] < 50 and last['bb_width'] < 0.12):
             self.order_type = 'sell'
-            self.entry_price = close
+            self.entry_price = last['close']
             return 'sell'
-
+        
         return 'hold'
 
+
     def get_trade_info(self):
+        atr = self.df.iloc[-1]['ATR']
+        tp = self.entry_price + 3 * atr if self.order_type == 'buy' else self.entry_price - 3 * atr
+        sl = self.entry_price - 1.5 * atr if self.order_type == 'buy' else self.entry_price + 1.5 * atr
+
         return {
             'type': self.order_type,
             'entry': self.entry_price

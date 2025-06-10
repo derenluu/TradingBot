@@ -1,22 +1,14 @@
 import requests
 import datetime
 import logging
-
 logger = logging.getLogger(__name__)
 
-# Lớp hỗ trợ gửi thông báo dạng embed tới Discord qua webhook
 class Notifier:
     def __init__(self, webhook_url, default_color = "#cf4867"):
         self.webhook_url = webhook_url
         self.color = int(default_color.lstrip("#"), 16)
 
-    # Gửi thông báo dạng embed đến Discord
-    # Parameters:
-    # ⇒ title: Tiêu đề chính của embed
-    # ⇒ description: Nội dung mô tả
-    # ⇒ footer: Dòng chú thích ở cuối embed
-    # ⇒ fields: Danh sách dict {'name': ..., 'value': ..., 'inline': ...}
-    # ⇒ color: Mã màu hex (#rrggbb) hoặc int
+
     def send_log(self, title, description = None, footer = None, fields = None, color = None):
         embed_color = int(color.lstrip("#"), 16) if isinstance(color, str) else (color or self.color)
         embed = {

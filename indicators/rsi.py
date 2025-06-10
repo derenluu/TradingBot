@@ -1,4 +1,3 @@
-
 # Tính Relative Strength Index (RSI) và thêm vào DataFrame
 # Parameters:
 # ⇒ df (pd.DataFrame): Dữ liệu OHLCV

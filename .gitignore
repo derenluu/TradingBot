@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 
 # Environment and IDE
-.env
+# .env
 .venv/
 env/
 venv/

@@ -15,12 +15,12 @@ class SimpleStrategy:
 
 
     def analyze(self):
-        calculate_atr(self.df, period = 14)
-        calculate_rsi(self.df, period = 14)
-        calculate_bollinger_bands(self.df, column = 'close', window = 30, num_std = 2)
+        calculate_rsi(self.df, period = 16)
+        calculate_atr(self.df, period = 7)
+        calculate_bollinger_bands(self.df, column = 'close', window = 15, num_std = 1.5)
 
         # Tính độ rộng Bollinger Band
-        self.df['bb_width'] = (self.df['boll_upper'] - self.df['boll_lower']) / self.df['boll_middle']
+        self.df['BB_WIDTH'] = (self.df['BB_UPPER'] - self.df['BB_LOWER']) / self.df['BB_MID']
 
 
     def get_signal(self):
@@ -31,13 +31,13 @@ class SimpleStrategy:
         last = self.df.iloc[-1]
 
         # Điều kiện BUY: giá > BB mid, RSI > 50, BB hẹp
-        if (last['close'] > last['boll_middle'] and last['RSI_14'] > 50 and last['bb_width'] < 0.12):
+        if (last['close'] > last['BB_MID'] and last['RSI'] > 50 and last['BB_WIDTH'] < 0.12):
             self.order_type = 'buy'
             self.entry_price = last['close']
             return 'buy'
 
         # Điều kiện SELL: giá < BB mid, RSI < 50, BB hẹp
-        elif ( last['close'] < last['boll_middle'] and last['RSI_14'] < 50 and last['bb_width'] < 0.12):
+        elif (last['close'] < last['BB_MID'] and last['RSI'] < 50 and last['BB_WIDTH'] < 0.12):
             self.order_type = 'sell'
             self.entry_price = last['close']
             return 'sell'
@@ -46,11 +46,16 @@ class SimpleStrategy:
 
 
     def get_trade_info(self):
+        if self.entry_price is None or self.order_type is None:
+            return None
+    
         atr = self.df.iloc[-1]['ATR']
         tp = self.entry_price + 3 * atr if self.order_type == 'buy' else self.entry_price - 3 * atr
         sl = self.entry_price - 1.5 * atr if self.order_type == 'buy' else self.entry_price + 1.5 * atr
 
         return {
             'type': self.order_type,
-            'entry': self.entry_price
+            'entry': self.entry_price,
+            'tp': tp,
+            'sl': sl
         }

@@ -12,7 +12,7 @@ def calculate_lot_size(balance, risk_percent, stop_loss_pips, pip_value):
     return round(lot_size, 2)
 
 
-def get_pip_value(self, symbol):
+def get_pip_value(symbol):
     symbol_info = mt5.symbol_info(symbol)
     if symbol_info is None:
         logger.error(f"Không tìm thấy symbol: {symbol}")
@@ -23,25 +23,27 @@ def get_pip_value(self, symbol):
     return pip_size
 
 
-def calculate_stop_loss(self, entry_price, order_type, atr, band):
-    if None in (entry_price, order_type, atr, band):
+def calculate_stop_loss(entry_price, order_type, atr, band):
+    if any(x is None for x in (entry_price, order_type, atr, band)):
         return None
 
-    if order_type.lower() == 'buy':
-        return min(entry_price - atr, band)
-    elif order_type.lower() == 'sell':
-        return max(entry_price + atr, band)
+    order_type = order_type.lower()
+    if order_type == 'buy':
+        return entry_price - atr
+    elif order_type == 'sell':
+        return entry_price + atr
     else:
         raise ValueError("order_type phải là 'buy' hoặc 'sell'")
 
 
-def calculate_take_profit(self, entry_price, order_type, atr):
-    if None in (entry_price, order_type, atr):
+def calculate_take_profit(entry_price, order_type, atr, rr_ratio):
+    if any(x is None for x in (entry_price, order_type, atr, rr_ratio)):
         return None
 
-    if order_type.lower() == 'buy':
-        return entry_price + atr * self.rr_ratio
-    elif order_type.lower() == 'sell':
-        return entry_price - atr * self.rr_ratio
+    order_type = order_type.lower()
+    if order_type == 'buy':
+        return entry_price + atr * rr_ratio
+    elif order_type == 'sell':
+        return entry_price - atr * rr_ratio
     else:
         raise ValueError("order_type phải là 'buy' hoặc 'sell'")

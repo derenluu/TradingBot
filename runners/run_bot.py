@@ -43,11 +43,11 @@ if not account.login():
     )
     exit()
 
-# notifier.send_log(
-#     title="✅ MetaTrader5 connection successfully.",
-#     description=f"Account login successfully.\nAccount: `{account.account}`\nServer: `{account.server}`\nBalance: `{account.get_balance()} USD`",
-#     footer=f"Time: {time.strftime('%Y-%m-%d %H:%M:%S')}"
-# )
+notifier.send_log(
+    title="✅ MetaTrader5 connection successfully.",
+    description=f"Account login successfully.\nAccount: `{account.account}`\nServer: `{account.server}`\nBalance: `{account.get_balance()} USD`",
+    footer=f"Time: {time.strftime('%Y-%m-%d %H:%M:%S')}"
+)
 
 while True:
     # Bỏ qua nếu đang có lệnh mở
@@ -73,13 +73,15 @@ while True:
     if signal in ['buy', 'sell']:
         last = df.iloc[-1]
         balance = account.get_balance()
+        print(balance)
+        
         pip_value = get_pip_value(SYMBOL)
 
         sl = calculate_stop_loss(
             entry_price = trade['entry'],
             order_type = signal,
             atr = last['ATR'],
-            band = last['BB_LOWER'] if signal == 'buy' else last['BB_UPPER']
+            # band = last['BB_LOWER'] if signal == 'buy' else last['BB_UPPER']
         )
 
         tp = calculate_take_profit(

@@ -23,8 +23,8 @@ def get_pip_value(symbol):
     return pip_size
 
 
-def calculate_stop_loss(entry_price, order_type, atr, band):
-    if any(x is None for x in (entry_price, order_type, atr, band)):
+def calculate_stop_loss(entry_price, order_type, atr):
+    if any(x is None for x in (entry_price, order_type, atr)):
         return None
 
     order_type = order_type.lower()
